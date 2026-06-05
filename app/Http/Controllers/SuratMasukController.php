@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
 
@@ -20,13 +22,18 @@ class SuratMasukController extends Controller
     public function index(Request $request)
     {
         if ($redir = $this->cekLogin()) return $redir;
+
         $query = SuratMasuk::latest();
+
         if ($request->search) {
             $query->where('perihal', 'like', '%'.$request->search.'%')
-                  ->orWhere('no_surat', 'like', '%'.$request->search.'%')
+                  ->orWhere('nomor_surat', 'like', '%'.$request->search.'%')
+                  ->orWhere('nomor_agenda', 'like', '%'.$request->search.'%')
                   ->orWhere('asal_surat', 'like', '%'.$request->search.'%');
         }
+
         $surats = $query->paginate(10);
+
         return view('surat-masuk.index', compact('surats'));
     }
 
@@ -34,6 +41,7 @@ class SuratMasukController extends Controller
     {
         if ($redir = $this->cekLogin()) return $redir;
         $this->cekAdmin();
+
         return view('surat-masuk.create');
     }
 
@@ -41,15 +49,15 @@ class SuratMasukController extends Controller
     {
         if ($redir = $this->cekLogin()) return $redir;
         $this->cekAdmin();
+
         $validated = $request->validate([
-            'no_surat'       => 'required|string|max:100',
+            'nomor_agenda'   => 'required|string|max:100',
+            'nomor_surat'    => 'required|string|max:100',
             'tanggal_surat'  => 'required|date',
             'tanggal_terima' => 'required|date',
             'asal_surat'     => 'required|string|max:200',
             'perihal'        => 'required|string|max:255',
-            'sifat'          => 'required|in:Biasa,Penting,Rahasia',
-            'keterangan'     => 'nullable|string',
-            'file_surat'     => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'file_surat'     => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         if ($request->hasFile('file_surat')) {
@@ -58,6 +66,7 @@ class SuratMasukController extends Controller
         }
 
         SuratMasuk::create($validated);
+
         return redirect()->route('surat-masuk.index')
             ->with('success', 'Surat masuk berhasil ditambahkan.');
     }
@@ -65,6 +74,7 @@ class SuratMasukController extends Controller
     public function show(SuratMasuk $suratMasuk)
     {
         if ($redir = $this->cekLogin()) return $redir;
+
         return view('surat-masuk.show', compact('suratMasuk'));
     }
 
@@ -72,6 +82,7 @@ class SuratMasukController extends Controller
     {
         if ($redir = $this->cekLogin()) return $redir;
         $this->cekAdmin();
+
         return view('surat-masuk.edit', compact('suratMasuk'));
     }
 
@@ -79,15 +90,15 @@ class SuratMasukController extends Controller
     {
         if ($redir = $this->cekLogin()) return $redir;
         $this->cekAdmin();
+
         $validated = $request->validate([
-            'no_surat'       => 'required|string|max:100',
+            'nomor_agenda'   => 'required|string|max:100',
+            'nomor_surat'    => 'required|string|max:100',
             'tanggal_surat'  => 'required|date',
             'tanggal_terima' => 'required|date',
             'asal_surat'     => 'required|string|max:200',
             'perihal'        => 'required|string|max:255',
-            'sifat'          => 'required|in:Biasa,Penting,Rahasia',
-            'keterangan'     => 'nullable|string',
-            'file_surat'     => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'file_surat'     => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         if ($request->hasFile('file_surat')) {
@@ -96,6 +107,7 @@ class SuratMasukController extends Controller
         }
 
         $suratMasuk->update($validated);
+
         return redirect()->route('surat-masuk.index')
             ->with('success', 'Surat masuk berhasil diperbarui.');
     }
@@ -104,7 +116,9 @@ class SuratMasukController extends Controller
     {
         if ($redir = $this->cekLogin()) return $redir;
         $this->cekAdmin();
+
         $suratMasuk->delete();
+
         return redirect()->route('surat-masuk.index')
             ->with('success', 'Surat masuk berhasil dihapus.');
     }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout.app')
 
 @section('title', 'Edit Surat Keluar')
 @section('page-title', 'Edit Surat Keluar')

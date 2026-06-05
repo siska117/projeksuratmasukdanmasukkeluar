@@ -26,7 +26,7 @@
     <!-- Sidebar -->
     <div class="sidebar d-flex flex-column">
         <div class="logo text-center">
-            <h5>🏛️ KASBANGPOL</h5>
+            <h5>🏛️ KESBANGPOL</h5>
             <small>Agenda Surat</small>
         </div>
         <nav class="nav flex-column mt-3 flex-grow-1">

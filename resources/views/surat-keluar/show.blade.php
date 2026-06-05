@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout.app')
 
 @section('title', 'Detail Surat Keluar')
 @section('page-title', 'Detail Surat Keluar')
@@ -13,7 +13,7 @@
                     <i class="bi bi-file-earmark-text text-success me-2"></i>Detail Surat Keluar
                 </div>
                 <div class="d-flex gap-2">
-                    @if(Auth::user()->isAdmin())
+                   @if(session('user_role') === 'admin')
                     <a href="{{ route('surat-keluar.edit', $suratKeluar) }}" class="btn btn-sm btn-warning text-white">
                         <i class="bi bi-pencil me-1"></i> Edit
                     </a>
@@ -38,20 +38,13 @@
                     <span class="badge bg-{{ $suratKeluar->status_badge_color }}">{{ $suratKeluar->status }}</span>
                 </div>
 
-                @php
+              @php
                 $rows = [
-                    ['Nomor Surat', $suratKeluar->nomor_surat],
-                    ['Tanggal Surat', $suratKeluar->tanggal_surat->translatedFormat('d F Y')],
-                    ['Tanggal Kirim', $suratKeluar->tanggal_kirim ? $suratKeluar->tanggal_kirim->translatedFormat('d F Y') : '-'],
-                    ['Kepada / Tujuan', $suratKeluar->tujuan],
-                    ['Nama Tujuan', $suratKeluar->nama_tujuan ?: '-'],
-                    ['Perihal', $suratKeluar->perihal],
-                    ['Penandatangan', $suratKeluar->penandatangan ?: '-'],
-                    ['Lampiran', $suratKeluar->lampiran ?: '-'],
-                    ['Tembusan', $suratKeluar->tembusan ?: '-'],
-                    ['Catatan', $suratKeluar->catatan ?: '-'],
-                    ['Diinput oleh', $suratKeluar->pembuat?->name ?? '-'],
-                    ['Terakhir diubah oleh', $suratKeluar->pengubah?->name ?? '-'],
+                    ['Nomor Surat', $suratKeluar->no_surat],
+                    ['Tanggal Surat', $suratKeluar->tanggal_surat?->translatedFormat('d F Y') ?? '-'],
+                    ['Tujuan', $suratKeluar->tujuan_surat ?? '-'],
+                    ['Perihal', $suratKeluar->perihal ?? '-'],
+                    ['Sifat', $suratKeluar->sifat ?? '-'],
                 ];
                 @endphp
 
