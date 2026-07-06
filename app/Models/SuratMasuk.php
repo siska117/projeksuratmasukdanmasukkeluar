@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class SuratMasuk extends Model
 {
     protected $fillable = [
-        'nomor_agenda',
         'nomor_surat',
         'tanggal_surat',
         'tanggal_terima',

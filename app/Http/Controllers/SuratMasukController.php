@@ -51,8 +51,7 @@ class SuratMasukController extends Controller
         $this->cekAdmin();
 
         $validated = $request->validate([
-            'nomor_agenda'   => 'required|string|max:100',
-            'nomor_surat'    => 'required|string|max:100',
+            'nomor_surat'    => 'required',
             'tanggal_surat'  => 'required|date',
             'tanggal_terima' => 'required|date',
             'asal_surat'     => 'required|string|max:200',
